@@ -762,7 +762,7 @@ func (c *Client) newRequest(ctx context.Context, method string, metadata request
 	}
 
 	// Get credentials from the configured credentials provider.
-	value, err := c.credsProvider.Get()
+	value, err := c.credsProvider.Get(ctx)
 	if err != nil {
 		return nil, err
 	}

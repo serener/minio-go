@@ -97,7 +97,7 @@ func TestGetBucketLocationRequest(t *testing.T) {
 		c.setUserAgent(req)
 
 		// Get credentials from the configured credentials provider.
-		value, err := c.credsProvider.Get()
+		value, err := c.credsProvider.Get(context.Background())
 		if err != nil {
 			return nil, err
 		}

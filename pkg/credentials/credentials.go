@@ -18,6 +18,7 @@
 package credentials
 
 import (
+	"context"
 	"sync"
 	"time"
 )
@@ -143,7 +144,20 @@ func New(provider Provider) *Credentials {
 //
 // If Credentials.Expire() was called the credentials Value will be force
 // expired, and the next call to Get() will cause them to be refreshed.
-func (c *Credentials) Get() (Value, error) {
+func (c *Credentials) Get(ctx context.Context) (Value, error) {
+	contextCredentials := ctx.Value("credentials")
+	if contextCredentials != nil {
+		credentialsMap, ok := contextCredentials.(map[string]string)
+		if ok {
+			return Value{
+				AccessKeyID:     credentialsMap["access-key"],
+				SecretAccessKey: credentialsMap["secret-key"],
+				SessionToken:    "",
+				SignerType:      SignatureV4,
+			}, nil
+		}
+	}
+
 	if c == nil {
 		return Value{}, nil
 	}

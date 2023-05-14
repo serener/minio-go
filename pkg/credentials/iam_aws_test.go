@@ -156,7 +156,7 @@ func initStsTestServer(expireOn string) *httptest.Server {
 
 func TestIAMMalformedEndpoint(t *testing.T) {
 	creds := NewIAM("%%%%")
-	_, err := creds.Get()
+	_, err := creds.Get(context.Background())
 	if err == nil {
 		t.Fatal("Unexpected should fail here")
 	}
@@ -168,7 +168,7 @@ func TestIAMFailServer(t *testing.T) {
 
 	creds := NewIAM(server.URL)
 
-	_, err := creds.Get()
+	_, err := creds.Get(context.Background())
 	if err == nil {
 		t.Fatal("Unexpected should fail here")
 	}
@@ -182,7 +182,7 @@ func TestIAMNoRoles(t *testing.T) {
 	defer server.Close()
 
 	creds := NewIAM(server.URL)
-	_, err := creds.Get()
+	_, err := creds.Get(context.Background())
 	if err == nil {
 		t.Fatal("Unexpected should fail here")
 	}
